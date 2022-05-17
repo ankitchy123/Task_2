@@ -3,6 +3,7 @@ const express = require('express');
 const app = express()
 var cors = require('cors')
 const flash = require('connect-flash');
+const Ad = require('./models/AdModel');
 
 const port = process.env.PORT || 5000
 
@@ -34,7 +35,20 @@ app.get('/post', async (req, res) => {
     return res.render('postAd')
 })
 
+app.get('/viewAd', (req, res) => {
+    Ad.find({}, (err, items) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+        }
+        else {
+            res.render('viewAd', { items: items });
+        }
+    });
+});
+
 app.use('/api', require('./routes/post'));
+app.use('/api', require('./routes/fetchAd'));
 
 app.listen(port, () => {
     console.log(`App is listening on port http://localhost:${port}`);

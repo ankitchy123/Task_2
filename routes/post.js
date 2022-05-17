@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const multer = require('multer');
-const Post = require('../models/PostModel');
+const Ad = require('../models/AdModel');
 
 const Storage = multer.diskStorage({
     destination: 'uploads',
@@ -22,7 +22,7 @@ router.post('/upload', (req, res) => {
                 return res.redirect('/')
             }
 
-            const newPost = new Post({
+            const newAd = new Ad({
                 title: req.body.title,
                 description: req.body.description,
                 image: {
@@ -31,7 +31,7 @@ router.post('/upload', (req, res) => {
                 }
             })
 
-            newPost.save()
+            newAd.save()
             req.flash("success", "Ad Created")
             return res.redirect('/')
         })
