@@ -13,9 +13,13 @@ const adSchema = new Schema({
         type: String,
         required: [true, "Please enter description"],
     },
+    // image: {
+    //     data: Buffer,
+    //     contentType: String
+    // }
     image: {
-        data: Buffer,
-        contentType: String
+        type: String,
+        required: true
     }
 });
 

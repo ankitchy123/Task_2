@@ -34,27 +34,42 @@
         </div>
     </nav>
     <div class="container my-5">
-        <div class="card" style="width: 70%; margin: auto;">
-            <div>
-                <% items.forEach(function(item) { %>
-                    <div>
-                        <div class="card-body">
-                            <h5 class="card-title" style="color: #fa6342;">
-                                <%= item.title %>
-                            </h5>
-                            <p class="card-text"><small class="text-muted">Sponsored</small></p>
-                            <p class="card-text">
-                                <%= item.description %>
-                            </p>
-                            <img src="data:image/<%=item.image.contentType%>;base64,<%=item.image.data.toString('base64')%>"
-                                class="card-img-bottom" alt="...">
-                        </div>
-                    </div>
-                    <% }) %>
-            </div>
+        <div class="adbox" style="width: 70%; margin: auto;">
         </div>
     </div>
 </body>
+<script>
+    async function getAds() {
+        let url = 'http://localhost:5000/api/fetchads';
+        try {
+            let res = await fetch(url);
+            return await res.json();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async function renderAds() {
+        let ads = await getAds();
+        let html = '';
+        ads.forEach(ad => {
+            let htmlSegment = `
+                <div class="card my-5">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #fa6342;">${ad.title}</h5>
+                        <p class="card-text"><small class="text-muted">Sponsored</small></p>
+                        <p class="card-text">${ad.description}</p>
+                    </div>
+                    <img src="${ad.image}" class="card-img-bottom" width="10px" alt="...">
+                </div>`
+            html += htmlSegment;
+        });
+
+        let container = document.querySelector('.adbox');
+        container.innerHTML = html;
+    }
+
+    renderAds();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>

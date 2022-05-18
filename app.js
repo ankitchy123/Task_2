@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 
 // Middleware
+app.use(express.static('uploads'))
 app.set('view engine', 'ejs')
 app.use(require("express-session")({
     secret: "The milk would do that",
@@ -36,15 +37,7 @@ app.get('/post', async (req, res) => {
 })
 
 app.get('/viewAd', (req, res) => {
-    Ad.find({}, (err, items) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error occurred', err);
-        }
-        else {
-            res.render('viewAd', { items: items });
-        }
-    });
+    res.render('viewAd')
 });
 
 app.use('/api', require('./routes/post'));
